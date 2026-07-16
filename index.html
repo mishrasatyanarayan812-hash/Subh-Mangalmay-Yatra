@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abhay Mangalmay Full Poster Maker</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Mukta:wght@700;800&family=Poppins:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  body { font-family: 'Poppins', sans-serif; display: flex; margin: 0; background: #222; }
+.form { width: 30%; padding: 15px; background: white; height: 100vh; overflow-y: auto; }
+.preview { width: 70%; padding: 20px; display: flex; justify-content: center; align-items: center; overflow-y: auto; }
+  h3 { color: #D32F2F; }
+  label { font-weight: 600; font-size: 13px; display: block; margin-top: 10px; }
+  input, textarea { width: 100%; padding: 8px; margin: 4px 0 8px 0; border: 1px solid #ccc; border-radius: 6px; }
+  button { width: 100%; padding: 14px; background: #D32F2F; color: white; border: none; font-size: 16px; font-weight: bold; cursor: pointer; border-radius: 8px; margin-top: 15px; }
+
+  /* FULL POSTER A4 SIZE */
+  #poster {
+    width: 600px;
+    height: 900px; /* A4 Ratio */
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    color: white;
+    text-shadow: 2px 2px 4px #000; /* Text clear dikhe */
+    overflow: hidden;
+    border: 8px solid #FFD700;
+  }
+.overlay { background: rgba(0,0,0,0.4); width: 100%; height: 100%; padding: 20px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; }
+.top { text-align: center; }
+.om { font-size: 22px; font-weight: 700; }
+.jai { font-size: 20px; font-weight: 900; color: #FFD700; margin: 5px 0; }
+.comp { font-size: 28px; font-weight: 900; }
+.compHi { font-size: 32px; font-family: 'Mukta'; font-weight: 800; }
+.banner { background: rgba(13, 71, 161, 0.9); padding: 12px; font-size: 20px; font-weight: 900; margin: 10px 0; border-radius: 10px; }
+.photos { display: flex; justify-content: center; gap: 10px; }
+.photos img { width: 170px; height: 110px; object-fit: cover; border-radius: 10px; border: 3px solid #FFD700; }
+.price { background: rgba(183, 28, 28, 0.95); padding: 20px; border-radius: 15px; text-align: center; }
+.price.big { font-size: 40px; font-weight: 900; font-family: 'Mukta'; }
+.bottom { display: flex; justify-content: space-between; gap: 10px; }
+.box { background: rgba(0,0,0,0.7); padding: 10px; border-radius: 10px; flex: 1; font-size: 14px; }
+</style>
+</head>
+<body>
+
+<div class="form">
+  <h3>🎨 Full Poster Editor</h3>
+
+  <label>Background Poster Photo</label><input type="file" accept="image/*" onchange="setBg(event)">
+
+  <label>Top Line 1</label><input type="text" id="om" value="ॐ || श्री गणेशाय नम: ||" oninput="update()">
+  <label>Top Line 2</label><input type="text" id="jai" value="🙏 JAY SHRI RAM 🙏" oninput="update()">
+  <label>Company EN</label><input type="text" id="compEn" value="ABHAY MANGALMAY TOUR" oninput="update()">
+  <label>Company HI</label><input type="text" id="compHi" value="अभय मंगलमय टूर" oninput="update()">
+  <label>Main Banner</label><input type="text" id="banner" value="पवित्र तीर्थ यात्रा || गया जी ||" oninput="update()">
+  <label>Price</label><input type="number" id="price" value="6000" oninput="update()">
+
+  <label>Suvidha</label><textarea id="amenities" rows="3" oninput="update()">1. A/C Bus 2. 3 Time Bhojan 3. Nashta 4. Chai</textarea>
+  <label>Destination</label><textarea id="dest" rows="4" oninput="update()">कालिजर, चित्रकूट, अयोध्या धाम, प्रयागराज, बनारस</textarea>
+  <label>Contact</label><input type="text" id="contact" value="Booking: 98XXXXXXXX" oninput="update()">
+  <label>Address</label><input type="text" id="address" value="Office: Sipra, Madhya Pradesh" oninput="update()">
+
+  <label>Photo 1</label><input type="file" accept="image/*" onchange="loadImg(event, 'p1')">
+  <label>Photo 2</label><input type="file" accept="image/*" onchange="loadImg(event, 'p2')">
+
+  <button onclick="download()">📥 FULL HD POSTER DOWNLOAD</button>
+</div>
+
+<div class="preview">
+  <div id="poster" style="background-image: url('https://images.unsplash.com/photo-1564507592333-c60657eea523?q=80&w=1200')">
+    <div class="overlay">
+      <div class="top">
+        <div class="om" id="omText">ॐ || श्री गणेशाय नम: ||</div>
+        <div class="jai" id="jaiText">🙏 JAY SHRI RAM 🙏</div>
+        <div class="comp" id="compEnText">ABHAY MANGALMAY TOUR</div>
+        <div class="compHi" id="compHiText">अभय मंगलमय टूर</div>
+        <div class="banner" id="bannerText">पवित्र तीर्थ यात्रा || गया जी ||</div>
+      </div>
+
+      <div class="photos">
+        <img id="p1" src="https://placehold.co/170x110/FF9800/fff?text=Photo1">
+        <img id="p2" src="https://placehold.co/170x110/FF9800/fff?text=Photo2">
+      </div>
+
+      <div class="price">
+        <div>कियारा मात्र</div>
+        <div class="big">₹<span id="priceText">6000</span>/-</div>
+      </div>
+
+      <div class="bottom">
+        <div class="box">
+          <b>सुविधा:</b><br>
+          <span id="amenityText"></span>
+        </div>
+        <div class="box">
+          <b>गंतव्य:</b><br>
+          <span id="destText"></span>
+        </div>
+      </div>
+
+      <div class="box" style="text-align:center;">
+        <div id="contactText">Booking: 98XXXXXXXX</div>
+        <div id="addressText">Office: Sipra, Madhya Pradesh</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function update(){
+  document.getElementById('omText').innerText = document.getElementById('om').value;
+  document.getElementById('jaiText').innerText = document.getElementById('jai').value;
+  document.getElementById('compEnText').innerText = document.getElementById('compEn').value;
+  document.getElementById('compHiText').innerText = document.getElementById('compHi').value;
+  document.getElementById('bannerText').innerText = document.getElementById('banner').value;
+  document.getElementById('priceText').innerText = document.getElementById('price').value;
+  document.getElementById('contactText').innerText = document.getElementById('contact').value;
+  document.getElementById('addressText').innerText = document.getElementById('address').value;
+  document.getElementById('amenityText').innerText = document.getElementById('amenities').value;
+  let dest = document.getElementById('dest').value.split(','); let html = ''; dest.forEach(d => { if(d.trim()) html += `🔸 ${d.trim()}<br>`; });
+  document.getElementById('destText').innerHTML = html;
+}
+
+function loadImg(e, id){ let r = new FileReader(); r.onload = ()=>document.getElementById(id).src=r.result; r.readAsDataURL(e.target.files[0]); }
+function setBg(e){ let r = new FileReader(); r.onload = ()=>document.getElementById('poster').style.backgroundImage=`url(${r.result})`; r.readAsDataURL(e.target.files[0]); }
+
+function download(){
+  html2canvas(document.getElementById('poster'), {scale: 3}).then(c => {
+    let a = document.createElement('a');
+    a.download = 'Full_Poster_Abhat_Mangalmay.png';
+    a.href = c.toDataURL('image/png');
+    a.click();
+  });
+}
+update();
+</script>
+</body>
+</html>
